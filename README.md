@@ -1,12 +1,16 @@
 # ApexMockery
 
-Mocking framework for Apex
+Simple mocking framework for Apex
+
+## Set up
+
+This module is likely to be included as a submodule as part of a larger git repository. When cloning the parent repository, it is required that you run 
+`git submodule update --init` to get the `ApexMockery` files into your local to start working on/with them. Please run this command first before you do a full deploy
+so as to allow `sfdx` to also pick up and deploy this. (If CI/CD builds are failing due to `ApexMockery`, check that the aforementioned command is included in the build step.)
 
 ## Quick start
 
 To effectively mock and hence abstract the complexities of an object, use `ApexMockery` to inject the generated mock as a dependency of the class to be tested.
-
-Example:
 `SeriousBusiness.cls` (class to test)
 
 ```apex
