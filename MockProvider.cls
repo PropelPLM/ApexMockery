@@ -26,7 +26,7 @@ public class MockProvider implements System.StubProvider {
         return invocations != null && invocations.size() > 0;
     }
 
-    public Boolean assertHasBeenCalled(String methodName) {
+    public void assertHasBeenCalled(String methodName) {
         Boolean assertion = this.hasBeenCalled(methodName);
         System.assert(assertion, methodName + ' should have been called.');
     }
@@ -41,7 +41,7 @@ public class MockProvider implements System.StubProvider {
         System.assert(assertion, methodName + ' should have been called ' + String.valueOf(times) + '(s).');
     }
 
-    public voic hasNotBeenCalled(String methodName) {
+    public Boolean hasNotBeenCalled(String methodName) {
         return !this.invokedMethods.containsKey(methodName);
     }
 
