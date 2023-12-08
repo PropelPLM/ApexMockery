@@ -26,13 +26,28 @@ public class MockProvider implements System.StubProvider {
         return invocations != null && invocations.size() > 0;
     }
 
+    public Boolean assertHasBeenCalled(String methodName) {
+        Boolean assertion = this.hasBeenCalled(methodName);
+        System.assert(assertion, methodName + ' should have been called.');
+    }
+
     public Boolean hasBeenCalledTimes(String methodName, Integer times) {
         List<MethodInvocation> invocations = this.invokedMethods.get(methodName);
         return invocations != null && invocations.size() == times;
     }
 
-    public Boolean hasNotBeenCalled(String methodName) {
+    public void assertHasBeenCalledTimes(String methodName, Integer times) {
+        Boolean assertion = this.hasBeenCalledTimes(methodName, times);
+        System.assert(assertion, methodName + ' should have been called ' + String.valueOf(times) + '(s).');
+    }
+
+    public voic hasNotBeenCalled(String methodName) {
         return !this.invokedMethods.containsKey(methodName);
+    }
+
+    public void assertHasNotBeenCalled(String methodName) {
+        Boolean assertion = this.hasNotBeenCalled(methodName);
+        System.assert(assertion, methodName + ' should not have been called.');
     }
 
     public void mockReturnValue(String methodName, Object returnValue) {
@@ -110,6 +125,11 @@ public class MockProvider implements System.StubProvider {
                 if (compareTo.get(key) != this.paramArgMap.get(key)) { return false; }
             }
             return true;
+        }
+        
+        public void assertToHaveBeenCalledWith(Map<String, Object> compareTo) {
+            Boolean assertion = this.toHaveBeenCalledWith(compareTo);
+            System.assert(assertion, 'Actual call: ' + this.paramArgMap.toString());
         }
     }
 }
