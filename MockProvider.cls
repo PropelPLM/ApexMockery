@@ -67,8 +67,8 @@ public class MockProvider implements System.StubProvider {
         List<String> listOfParamNames,
         List<Object> listOfArgs
     ) {
-
-        MethodInvocation mi = new MethodInvocation(listOfParamNames, listOfArgs);
+        Object returnValue = evaluateReturnValue(returnType);
+        MethodInvocation mi = new MethodInvocation(listOfParamNames, listOfArgs, returnValue);
 
         if (!this.invokedMethods.containsKey(stubbedMethodName)) {
             this.invokedMethods.put(stubbedMethodName, new List<MethodInvocation>{ mi });
@@ -80,7 +80,7 @@ public class MockProvider implements System.StubProvider {
             return this.mockReturnValues.get(stubbedMethodName);
         }
 
-        return evaluateReturnValue(returnType);
+        return returnValue;
     }
 
     private Object evaluateReturnValue(Type returnType) {
@@ -94,13 +94,16 @@ public class MockProvider implements System.StubProvider {
     public class MethodInvocation {
         public String methodSignature;
         public Map<String, Object> paramArgMap;
+        public Object returnValue;
 
         public MethodInvocation(
             List<String> listOfParamNames,
-            List<Object> listOfArgs
+            List<Object> listOfArgs,
+            Object returnValue
         ) {
             this.methodSignature = String.join(listOfParamNames, ',');
             this.paramArgMap = createParamArgumentMap(listOfParamNames, listOfArgs);
+            this.returnValue = returnValue;
         }
 
         private Map<String, Object> createParamArgumentMap(List<String> listOfParamNames, List<Object> listOfArgs) {
