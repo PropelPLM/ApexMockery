@@ -1,5 +1,6 @@
 @isTest
 public class MockProvider implements System.StubProvider {
+    public static Boolean ignoreDatabaseInteractions = false;
     public class MockProviderException extends Exception {}
     private static final Set<Type> INCONSTRUCTIBLE_TYPES = new Set<Type> {
         Date.class,
