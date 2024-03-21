@@ -133,7 +133,7 @@ public class MockProvider implements System.StubProvider {
         
         public void assertToHaveBeenCalledWith(Map<String, Object> compareTo) {
             Boolean assertion = this.toHaveBeenCalledWith(compareTo);
-            System.assert(assertion, 'Actual call: ' + this.paramArgMap.toString());
+            System.assert(assertion, 'Actual call: ' + this.paramArgMap.toString() + '. Received: ' + compareTo.toString() +'.');
         }
     }
 }
