@@ -1,5 +1,4 @@
-@isTest
-public class MockProvider implements System.StubProvider {
+public virtual class MockProvider implements System.StubProvider {
     public static Boolean ignoreDatabaseInteractions = false;
     public class MockProviderException extends Exception {}
     private static final Set<Type> INCONSTRUCTIBLE_TYPES = new Set<Type> {
@@ -60,7 +59,7 @@ public class MockProvider implements System.StubProvider {
         this.mockReturnValues.clear();
     }
 
-    public Object handleMethodCall(
+    public virtual Object handleMethodCall(
         Object stubbedObject,
         String stubbedMethodName,
         Type returnType,
