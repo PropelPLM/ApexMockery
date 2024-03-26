@@ -61,18 +61,18 @@ public class MockProvider implements System.StubProvider {
      * Uses MockProviderException as default
      * @param methodName Name of the method that will throw an exception
      */
-	public void setException(String methodName) {
-		setException(methodName, new MockProviderException('Mock Exception'));
-	}
+    public void setException(String methodName) {
+        setException(methodName, new MockProviderException('Mock Exception'));
+    }
 
     /**
      * Set the mock to throw the provided exception for the provided method name
      * @param methodName Name of the method that will throw an exception
      * @param exceptionToThrow Instance of the exception to be thrown (ex. DmlException)
      */
-	public void setException(String methodName, Exception exceptionToThrow) {
-		this.exceptions.put(methodName, exceptionToThrow);
-	}
+    public void setException(String methodName, Exception exceptionToThrow) {
+        this.exceptions.put(methodName, exceptionToThrow);
+    }
 
     public void reset() {
         this.invokedMethods.clear();
