@@ -16,6 +16,7 @@ public class MockProvider implements System.StubProvider {
     public Object mockInstance;
     public Map<String, List<MethodInvocation>> invokedMethods = new Map<String, List<MethodInvocation>>();
     public Map<String, Object> mockReturnValues = new Map<String, Object>();
+    public Map<String, Exception> exceptions = new Map<String, Exception>();
 
     public MockProvider(Type typeToMock) {
         this.mockType = typeToMock;
@@ -55,9 +56,28 @@ public class MockProvider implements System.StubProvider {
         this.mockReturnValues.put(methodName, returnValue);
     }
 
+    /**
+     * Set the mock to throw an exception for the provided method name
+     * Uses MockProviderException as default
+     * @param methodName Name of the method that will throw an exception
+     */
+	public void setException(String methodName) {
+		setException(methodName, new MockProviderException('Mock Exception'));
+	}
+
+    /**
+     * Set the mock to throw the provided exception for the provided method name
+     * @param methodName Name of the method that will throw an exception
+     * @param exceptionToThrow Instance of the exception to be thrown (ex. DmlException)
+     */
+	public void setException(String methodName, Exception exceptionToThrow) {
+		this.exceptions.put(methodName, exceptionToThrow);
+	}
+
     public void reset() {
         this.invokedMethods.clear();
         this.mockReturnValues.clear();
+        this.exceptions.clear();
     }
 
     public Object handleMethodCall(
@@ -70,6 +90,11 @@ public class MockProvider implements System.StubProvider {
     ) {
         Object returnValue = evaluateReturnValue(returnType);
         MethodInvocation mi = new MethodInvocation(listOfParamNames, listOfArgs, returnValue);
+
+        // If an exception has been set for this method, throw the exception
+        if (this.exceptions.containsKey(stubbedMethodName)) {
+            throw this.exceptions.get(stubbedMethodName);
+        }
 
         if (!this.invokedMethods.containsKey(stubbedMethodName)) {
             this.invokedMethods.put(stubbedMethodName, new List<MethodInvocation>{ mi });
