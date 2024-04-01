@@ -88,7 +88,7 @@ public class MockProvider implements System.StubProvider {
         List<String> listOfParamNames,
         List<Object> listOfArgs
     ) {
-        Object returnValue = evaluateReturnValue(returnType);
+        Object returnValue = evaluateReturnValue(stubbedMethodName, returnType);
         MethodInvocation mi = new MethodInvocation(listOfParamNames, listOfArgs, returnValue);
 
         // If an exception has been set for this method, throw the exception
@@ -102,11 +102,13 @@ public class MockProvider implements System.StubProvider {
             this.invokedMethods.get(stubbedMethodName).add(mi);
         }
 
-        if (this.mockReturnValues.containsKey(stubbedMethodName)) {
-            return this.mockReturnValues.get(stubbedMethodName);
-        }
-
         return returnValue;
+    }
+
+    private Object evaluateReturnValue(String methodName, Type returnType) {
+        return this.mockReturnValues.containsKey(methodName)
+            ? this.mockReturnValues.get(methodName)
+            : this.evaluateReturnValue(returnType);
     }
 
     private Object evaluateReturnValue(Type returnType) {
